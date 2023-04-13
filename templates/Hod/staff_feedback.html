@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+    <div class="row align-items-center">
+       <div class="col">
+          <h3 class="page-title">Teacher Feedback</h3>
+          <ul class="breadcrumb">
+             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+             <li class="breadcrumb-item active">Feedback</li>
+          </ul>
+       </div>
+       <div class="col-auto text-right float-right ml-auto">
+         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+             View All Teacher Feedback
+           </button>
+       </div>
+    </div>
+ </div>
+ {% include "includes/messages.html" %}
+ <div class="row">
+     <div class="col-sm-12">
+         <div class="card card-table">
+             <div class="card-body">
+                 <div class="table-responsive">
+                     <table id="table_id" class="table table-hover table-center mb-0 ">
+                         <thead>
+                             <tr>
+                                 <th>ID</th>
+                                 <th>Teacher Name</th>
+                                 <th>Feedback</th>
+                                 <th>Date</th>
+                                 
+                                 
+                                 <th class="text-right">Action</th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                             {% for i in feedback %}
+                             <tr>
+                                 <td>{{i.id}}</td>
+                                 <td>
+                                     <h2 class="table-avatar">
+                                         <a href="teacher-details.html"
+                                             class="avatar avatar-sm mr-2"><img
+                                                 class="avatar-img rounded-circle"
+                                                 src="/{{i.staff_id.admin.profile_pic}}"
+                                                 alt="User Image"></a>
+                                         <a href="teacher-details.html">{{i.staff_id.admin.first_name}} &nbsp {{i.staff_id.admin.last_name}}</a>
+                                     </h2>
+                                 </td>
+                                 
+                                 
+                                 
+                                 <td>{{i.feedback}}</td>
+                                 <td>{{i.created_at}}</td>
+                                 
+                                 <td class="text-right">
+                                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sendnotification-{{forloop.counter}}">
+                                         Reply
+                                       </button>
+                                 </td>
+                             </tr>
+                             {% endfor %}
+                         </tbody>
+                     </table>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ </div>
+ 
+ <!-- View Notification Teacher -->
+ <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+         </div>
+         <div class="modal-body">
+             <div class="row">
+                 <div class="col-sm-12">
+                     <div class="card card-table">
+                         <div class="card-body">
+                             <div class="table-responsive">
+                                 <table id="table_id" class="table table-hover table-center mb-0 ">
+                                     <thead>
+                                         <tr>
+                                           <th style="width: 60%;">Feedback</th> 
+                                             <th style="width: 30%;" class="text-right">Reply</th>
+                                         </tr>
+                                     </thead>
+                                     <tbody>
+                                         {% for i in feedback_history %}
+                                         <tr>
+                                             <td>{{i.feedback}}</td>
+                                            
+                                             {% if i.status == 0 %}
+                                             <td><span class="badge badge-danger">No reply</span> </td>
+                                             {% else %}
+                                             <td>{{i.feedback_reply}}</td>
+                                             
+                                         
+                                             {% endif %}
+                                             
+                                            
+                                             
+                                             
+                                         </tr>
+                                         {% endfor %}
+                                     </tbody>
+                                 </table>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+           <button type="button" class="btn btn-primary">Save changes</button>
+         </div>
+       </div>
+     </div>
+ </div>
+ 
+ <!-- Send notification -->
+ {% for i in feedback %}
+   
+ 
+ <div class="modal fade" id="sendnotification-{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="exampleModalLongTitle1">Reply To : {{i.staff_id.admin.first_name}}&nbsp;{{i.staff_id.admin.last_name}}</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+         </div>
+         <div class="modal-body">
+             <form method="post" action="{% url 'hod_staff_feedback_save' %}">
+                 {% csrf_token %}
+                 <div class="form-group">
+                  
+                   <input type="text" class="form-control" name="feedback_id" value="{{i.id}}" hidden>
+                   <textarea rows="4" class="form-control" name="feedback_reply" ></textarea>
+                 </div>
+                 
+                 <button type="submit" class="btn btn-primary">Send Reply</button>
+               </form>
+         </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+       </div>
+     </div>
+   </div>
+   {% endfor %}
+{% endblock  %}

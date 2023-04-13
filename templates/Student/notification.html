@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+   <div class="row align-items-center">
+      <div class="col">
+         <h3 class="page-title">Notification</h3>
+         <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item active">Notification</li>
+         </ul>
+      </div>
+   
+   </div>
+</div>
+{% include "includes/messages.html" %}
+<div class="row">
+   <div class="col-sm-12">
+      <div class="card card-table">
+         <div class="card-body">
+            <div class="table-responsive">
+               <table id="table_id" class="table table-hover table-center mb-0 ">
+                  <thead>
+                     <tr>
+                        <th>Message</th>
+                        
+                        <th class="text-right">Action</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                   {% for i in notification  %}
+                     <tr>
+                        <td>{{i.message}}</td>
+                       
+                        <td class="text-right">
+                           <div class="actions">
+                              {% if i.status == 0 %}
+                                
+                                <a href="{% url 'student_notification_mark_as_done' status=i.id %}" class="btn btn-danger" >Mark As Done</a> 
+
+                              {% else %}
+                              <button class="btn btn-danger" disabled="disabled">Mark As Done</button>
+
+                              {% endif %}
+                           </div>
+                        </td>
+                     </tr> 
+                     {% endfor %} 
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+{% endblock  %}

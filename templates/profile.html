@@ -1,0 +1,89 @@
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+crossorigin="anonymous"></script>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="{% url 'profile_update' %}" enctype="multipart/form-data">
+                   {% csrf_token %}
+                        <div class="col-12">
+                            <h5 class="form-title"><span >Profile Update</span></h5>
+                        </div>
+                        
+
+
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.tags == 'success' %}
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            </strong> {{message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                        {% endif %}
+                        {% if message.tags == 'error' %}
+
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            </strong> {{message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        <div class="col-sm-11">
+                            <div class="form-group">
+                                <label>Profile Pic</label>
+                                <input type="file" class="form-control" name="profile_pic">
+                            </div>
+                        </div>
+                        <div class="col-sm-11">
+                            <div class="form-group">
+                                <label>First name</label>
+                                <input type="text" class="form-control" name="first_name" value="{{user.first_name}}">
+                            </div>
+                        </div>
+                        <div class="col-sm-11">
+                            <div class="form-group">
+                                <label>Last name</label>
+                                <input type="text" class="form-control" name="last_name" value="{{user.last_name}}">
+                            </div>
+                        </div>
+                        <div class="col-sm-11">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control"  name="email" value="{{user.email}}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-11">
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="email" class="form-control" name="username" value="{{user.username}}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-11">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" name="password" placeholder="Fill Only If You Want To Change Password">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
